@@ -1,4 +1,6 @@
 package shulman.maxim.firstgame.screens;
+import static shulman.maxim.firstgame.entities.world.Tile.TILE_SIZE;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
@@ -8,58 +10,37 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.utils.ScreenUtils;
+import java.util.ArrayList;
+import java.util.List;
 import shulman.maxim.firstgame.Main;
+import shulman.maxim.firstgame.entities.world.EmptyTile;
+import shulman.maxim.firstgame.entities.world.Tile;
 
 public class GameScreen implements Screen {
-    public static float SPEED = 40;
-
-    private Texture image;
-    private Texture planetTexture;
-    private Circle planetCollision;
-    private Sprite planetSprite;
-    float x;
-    float y;
     Main game;
+    ArrayList<EmptyTile> tiles;
 
     public GameScreen(Main game){
         this.game = game;
+        tiles = EmptyTile.populateWorld(2);
     }
     @Override
     public void show() {
 
-        image = new Texture("libgdx.png");
-        planetTexture = new Texture("circle.png");
-        planetCollision = new Circle();
-        planetSprite = new Sprite(planetTexture);
-        x = 0;
-        y = 0;
     }
 
     @Override
     public void render(float v) {
         ScreenUtils.clear(Color.WHITE);
-
-        if(Gdx.input.isKeyPressed(Keys.UP)){
-            y += SPEED * Gdx.graphics.getDeltaTime();
-        }
-        if(Gdx.input.isKeyPressed(Keys.DOWN)){
-            y -= SPEED * Gdx.graphics.getDeltaTime();
-        }
-        if(Gdx.input.isKeyPressed(Keys.RIGHT)){
-            x += SPEED * Gdx.graphics.getDeltaTime();
-        }
-        if(Gdx.input.isKeyPressed(Keys.LEFT)){
-            x -= SPEED * Gdx.graphics.getDeltaTime();
-        }
         game.getSpriteBatch().begin();
-        game.getSpriteBatch().draw(planetTexture, x, y);
+        EmptyTile.drawAllTiles(tiles, game);
         game.getSpriteBatch().end();
+
     }
 
-
-
     @Override
-    public void resize(int i, int i1) {
+    public void resize(int width, int height) {
+        game.resize(width, height);
 
     }
 
