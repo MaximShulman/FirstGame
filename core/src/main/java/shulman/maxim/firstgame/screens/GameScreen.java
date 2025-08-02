@@ -1,28 +1,27 @@
 package shulman.maxim.firstgame.screens;
-import static shulman.maxim.firstgame.entities.world.Tile.TILE_SIZE;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import java.util.ArrayList;
-import java.util.List;
 import shulman.maxim.firstgame.Main;
+import shulman.maxim.firstgame.entities.tools.TileUtils;
 import shulman.maxim.firstgame.entities.world.EmptyTile;
-import shulman.maxim.firstgame.entities.world.Tile;
+import shulman.maxim.firstgame.entities.world.Planet;
+import shulman.maxim.firstgame.entities.world.PlanetTile;
 
 public class GameScreen implements Screen {
-    Main game;
-    ArrayList<EmptyTile> tiles;
+
+    private Vector2 touchPos;
+    private Main game;
+    private ArrayList<EmptyTile> tiles;
 
     public GameScreen(Main game){
         this.game = game;
-        tiles = EmptyTile.populateWorld(2);
+        tiles = TileUtils.populateWorld(2, game);
+        touchPos = new Vector2();
     }
     @Override
     public void show() {
@@ -32,8 +31,12 @@ public class GameScreen implements Screen {
     @Override
     public void render(float v) {
         ScreenUtils.clear(Color.WHITE);
+        game.getSpriteBatch().setProjectionMatrix(game.getCamera().combined);
         game.getSpriteBatch().begin();
-        EmptyTile.drawAllTiles(tiles, game);
+        touchPos.set(Gdx.input.getX(), Gdx.input.getY());
+        game.getGameViewport().unproject(touchPos);
+        //tiles.stream().filter(tile -> tile.getBoundsHexagon().contains(touchPos)).forEach(tile -> TileUtils.drawTile(tile, game));
+        TileUtils.drawTile(new PlanetTile(0,0,0,game,new Planet("earth")), game);
         game.getSpriteBatch().end();
 
     }

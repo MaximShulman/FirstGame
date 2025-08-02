@@ -5,12 +5,13 @@ import com.badlogic.gdx.math.Polygon;
 import shulman.maxim.firstgame.Main;
 import shulman.maxim.firstgame.entities.tools.TileUtils;
 
-public class EmptyTile extends Tile {
+public class PlanetTile extends Tile{
 
     private int x, y, z;
     private static Texture emptyTileTexture;
     private Main game;
     private Polygon boundsHexagon;
+    private Planet planet;
 
 
 
@@ -41,12 +42,13 @@ public class EmptyTile extends Tile {
 
 
 
-    public EmptyTile(int x, int y, int z, Main game) {
-        emptyTileTexture = new Texture("empty_hexagon_tile2.png");
+    public PlanetTile(int x, int y, int z, Main game, Planet planet) {
+        emptyTileTexture = new Texture("empty_hexagon_tile.png");
         this.x = x;
         this.y = y;
         this.z = z;
         this.game = game;
+        this.planet = planet;
         boundsHexagon = new Polygon(TileUtils.getVertices(this, game));
     }
 
@@ -54,4 +56,5 @@ public class EmptyTile extends Tile {
     public void dispose() {
         emptyTileTexture.dispose();
     }
+
 }
