@@ -35,8 +35,9 @@ public class GameScreen implements Screen {
         game.getSpriteBatch().begin();
         touchPos.set(Gdx.input.getX(), Gdx.input.getY());
         game.getGameViewport().unproject(touchPos);
-        //tiles.stream().filter(tile -> tile.getBoundsHexagon().contains(touchPos)).forEach(tile -> TileUtils.drawTile(tile, game));
-        TileUtils.drawTile(new PlanetTile(0,0,0,game,new Planet("earth")), game);
+        TileUtils.drawAllTiles(tiles, game);
+        tiles.stream().filter(tile -> tile.getBoundsHexagon().contains(touchPos)).forEach(tile -> TileUtils.drawTileSelected(tile, game));
+        //TileUtils.drawTileUnselected(new PlanetTile(0,0,0,game,new Planet("earth")), game);
         game.getSpriteBatch().end();
 
     }

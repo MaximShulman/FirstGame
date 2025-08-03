@@ -8,7 +8,8 @@ import shulman.maxim.firstgame.entities.tools.TileUtils;
 public class PlanetTile extends Tile{
 
     private int x, y, z;
-    private static Texture emptyTileTexture;
+    private static Texture planetTileTextureUnselected;
+    private static Texture planetTileTextureSelected;
     private Main game;
     private Polygon boundsHexagon;
     private Planet planet;
@@ -18,6 +19,10 @@ public class PlanetTile extends Tile{
     @Override
     public int getX() {
         return x;
+    }
+
+    public Planet getPlanet() {
+        return planet;
     }
 
     @Override
@@ -36,14 +41,20 @@ public class PlanetTile extends Tile{
     }
 
     @Override
-    public Texture getTileTexture() {
-        return emptyTileTexture;
+    public Texture getTileTextureUnselected() {
+        return planetTileTextureUnselected;
+    }
+
+    @Override
+    public Texture getTileTextureSelected() {
+        return planetTileTextureSelected;
     }
 
 
 
     public PlanetTile(int x, int y, int z, Main game, Planet planet) {
-        emptyTileTexture = new Texture("empty_hexagon_tile.png");
+        planetTileTextureUnselected = new Texture("planet_hexagon_unselected.png");
+        planetTileTextureSelected = new Texture("planet_hexagon_selected.png");
         this.x = x;
         this.y = y;
         this.z = z;
@@ -54,7 +65,7 @@ public class PlanetTile extends Tile{
 
 
     public void dispose() {
-        emptyTileTexture.dispose();
+        planetTileTextureUnselected.dispose();
     }
 
 }

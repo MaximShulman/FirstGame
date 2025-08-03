@@ -12,21 +12,17 @@ public class TileUtils {
     public static float TILE_WIDTH = 20;
     public static float TILE_HEIGHT = TILE_WIDTH * 0.85f;
     public static float LINE_SIZE = TILE_WIDTH * 0.5f;
-    public static float BORDER_SIZE = TILE_WIDTH * 0.0015f;
+    public static float BORDER_SIZE_COEFFICIENT = TILE_WIDTH * 0.015f * 0.5f;
     private record ViewportCoordinates(float x, float y) {
 
     }
 
     public static ArrayList<EmptyTile> populateWorld(int size, Main game) {
         ArrayList<EmptyTile> result = new ArrayList<>();
-        size /= 2;
-        for(int x = -size; x <= size; x++){
-            for(int y = -size; y <= size; y++){
-                for(int z = -size; z <= size; z++){
-                    result.add(new EmptyTile(x, y, z, game));
-                }
-            }
-        }
+        result = new ArrayList<>(List.of(new EmptyTile(0,0,0,game),
+            new EmptyTile(0,1,0,game), new EmptyTile(0,0,1,game), new EmptyTile(0,-1,1,game),
+            new EmptyTile(0,-1,0,game), new EmptyTile(0,0,-1,game), new EmptyTile(0,1,-1,game)));
+
         return result;
     }
 
@@ -51,18 +47,25 @@ public class TileUtils {
         The tiles are drawn starting from the center. The conversion from hex coordinates
         to batch parameters is difficult to explain.
      */
-    public static <T extends Tile> void drawTile(T tile, Main game) {
+    public static <T extends Tile> void drawTileUnselected(T tile, Main game) {
 
         ViewportCoordinates coordinates = getViewportCoordinates(tile, game);
 
-        game.getSpriteBatch().draw(tile.getTileTexture(), coordinates.x(), coordinates.y(), TILE_WIDTH, TILE_HEIGHT);
+        game.getSpriteBatch().draw(tile.getTileTextureUnselected(), coordinates.x(), coordinates.y(), TILE_WIDTH, TILE_HEIGHT);
+    }
+
+    public static <T extends Tile> void drawTileSelected(T tile, Main game) {
+
+        ViewportCoordinates coordinates = getViewportCoordinates(tile, game);
+
+        game.getSpriteBatch().draw(tile.getTileTextureSelected(), coordinates.x(), coordinates.y(), TILE_WIDTH, TILE_HEIGHT);
     }
 
     public static <T extends Tile> ViewportCoordinates getViewportCoordinates(T tile, Main game) {
-        float horizontalYCoefficient = tile.getY() * (LINE_SIZE + LINE_SIZE / 2);
-        float horizontalZCoefficient = -tile.getZ() * (LINE_SIZE + LINE_SIZE / 2);
-        float verticalYCoefficient = tile.getY() * TILE_HEIGHT / 2;
-        float verticalZCoefficient = tile.getZ() * TILE_HEIGHT / 2;
+        float horizontalYCoefficient = tile.getY() * (LINE_SIZE + LINE_SIZE / 2 - BORDER_SIZE_COEFFICIENT);
+        float horizontalZCoefficient = tile.getZ() * (LINE_SIZE + LINE_SIZE / 2 - BORDER_SIZE_COEFFICIENT);
+        float verticalYCoefficient = tile.getY() * (TILE_HEIGHT / 2 - BORDER_SIZE_COEFFICIENT);
+        float verticalZCoefficient = -tile.getZ() * (TILE_HEIGHT / 2 - BORDER_SIZE_COEFFICIENT);
 
         float x = tile.getX() * (TILE_WIDTH + TILE_WIDTH / 2) + game.getGameViewport().getWorldWidth() / 2
             + horizontalYCoefficient
@@ -87,9 +90,7 @@ public class TileUtils {
     }
 
     public static void drawAllTiles(List<? extends Tile> list, Main game) {
-        for(Tile tile : list){
-            drawTile(tile, game);
-        }
+        list.stream().forEach(tile -> drawTileUnselected(tile, game));
     }
 
 }
