@@ -51,15 +51,19 @@ public class PlanetTile extends Tile {
     }
 
 
-    public PlanetTile(int x, int y, int z, Viewport viewport, Planet planet) {
-        planetTileTextureUnselected = new Texture("planet_hexagon_unselected.png");
-        planetTileTextureSelected = new Texture("planet_hexagon_selected.png");
+    public PlanetTile(int x, int y, int z, Viewport viewport, Planet planet, Texture textureSelected, Texture textureUnselected) {
+        planetTileTextureUnselected = textureUnselected;
+        planetTileTextureSelected = textureSelected;
         this.x = x;
         this.y = y;
         this.z = z;
         this.viewport = viewport;
         this.planet = planet;
         boundsHexagon = new Polygon(TileUtils.getVertices(this, viewport));
+    }
+
+    public PlanetTile(int x, int y, int z,  Viewport viewport, Planet planet) {
+        this(x, y, z, viewport, planet, new Texture("planet_hexagon_selected.png"), new Texture("planet_hexagon_unselected.png"));
     }
 
 

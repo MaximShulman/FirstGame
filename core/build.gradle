@@ -55,21 +55,4 @@ pitest {
 test {
   useJUnitPlatform()
 }
-tasks.register('copyAssetsForTests', Copy){
-  from "$rootDir/assets"
-  into "$rootDir/test-assets"
-}
 
-sourceSets {
-  test {
-    resources {
-      srcDir "$rootDir/test-assets"
-    }
-  }
-}
-
-tasks.named('processTestResources') {
-  dependsOn(tasks.named('copyAssetsForTests'))
-  // Also declare that processTestResources uses the output dir of copyAssetsForTests as input
-  inputs.dir("$rootDir/test-assets")
-}

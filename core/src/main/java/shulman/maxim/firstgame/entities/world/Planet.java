@@ -7,8 +7,11 @@ public class Planet {
     private Texture texture;
 
     public Planet(String name) {
-        this.name = name;
-        texture = new Texture("planet_texture.png");
+        this(name, new Texture("planet_texture.png"));
+    }
+
+    public Planet(String name, Texture texture) {
+        this.texture = texture;
     }
 
     public String getName() {

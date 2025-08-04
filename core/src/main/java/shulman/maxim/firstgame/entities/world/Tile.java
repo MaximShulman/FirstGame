@@ -57,4 +57,8 @@ public abstract class Tile {
         result = 31 * result + getZ();
         return result;
     }
+
+    @Override public String toString(){
+        return getX() + ", " + getY() + ", " + getZ();
+    }
 }

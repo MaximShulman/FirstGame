@@ -19,12 +19,7 @@ public class GameScreen implements Screen {
 
     public GameScreen(Main game){
         this.game = game;
-        Tile tileA = new EmptyTile(0,1,0,game.getGameViewport());
-        Tile tileB = new EmptyTile(1,0,0,game.getGameViewport());
-        System.out.println("Tile A: " + tileA.getX() + "," + tileA.getY() + "," + tileA.getZ());
-        System.out.println("Tile B: " + tileB.getX() + "," + tileB.getY() + "," + tileB.getZ());
-        System.out.println("Equal? " + tileA.equals(tileB));
-        tiles = TileUtils.populateWorld(1, game.getGameViewport());
+        tiles = TileUtils.populateWorld(10, game.getGameViewport());
         touchPos = new Vector2();
     }
     @Override
@@ -42,7 +37,6 @@ public class GameScreen implements Screen {
 
         TileUtils.drawAllTiles(tiles, game.getGameViewport(), game.getSpriteBatch());
         tiles.stream().filter(tile -> tile.getBoundsHexagon().contains(touchPos)).forEach(tile -> TileUtils.drawTileSelected(tile, game.getGameViewport(), game.getSpriteBatch()));
-        //TileUtils.drawTileUnselected(new PlanetTile(0,0,0,game,new Planet("earth")), game);
         game.getSpriteBatch().end();
 
     }

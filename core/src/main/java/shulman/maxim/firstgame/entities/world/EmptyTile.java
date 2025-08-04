@@ -45,16 +45,18 @@ public class EmptyTile extends Tile {
         return emptyTileTextureSelected;
     }
 
-
-
-    public EmptyTile(int x, int y, int z, Viewport viewport) {
-        emptyTileTextureUnselected = new Texture("empty_hexagon_unselected.png");
-        emptyTileTextureSelected = new Texture("empty_hexagon_selected.png");
+    public EmptyTile(int x, int y, int z, Viewport viewport, Texture textureSelected, Texture textureUnselected) {
+        emptyTileTextureUnselected = textureUnselected;
+        emptyTileTextureSelected = textureSelected;
         this.x = x;
         this.y = y;
         this.z = z;
         this.viewport = viewport;
         boundsHexagon = new Polygon(TileUtils.getVertices(this, viewport));
+    }
+
+    public EmptyTile(int x, int y, int z, Viewport viewport) {
+        this(x, y, z, viewport, new Texture("empty_hexagon_selected.png"), new Texture("empty_hexagon_unselected.png"));
     }
 
 
