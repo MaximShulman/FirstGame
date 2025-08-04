@@ -2,15 +2,16 @@ package shulman.maxim.firstgame.entities.world;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import shulman.maxim.firstgame.Main;
-import shulman.maxim.firstgame.entities.tools.TileUtils;
+import shulman.maxim.firstgame.tools.TileUtils;
 
 public class EmptyTile extends Tile {
 
     private int x, y, z;
     private static Texture emptyTileTextureUnselected;
     private static Texture emptyTileTextureSelected;
-    private Main game;
+    private Viewport viewport;
     private Polygon boundsHexagon;
 
 
@@ -46,14 +47,14 @@ public class EmptyTile extends Tile {
 
 
 
-    public EmptyTile(int x, int y, int z, Main game) {
+    public EmptyTile(int x, int y, int z, Viewport viewport) {
         emptyTileTextureUnselected = new Texture("empty_hexagon_unselected.png");
         emptyTileTextureSelected = new Texture("empty_hexagon_selected.png");
         this.x = x;
         this.y = y;
         this.z = z;
-        this.game = game;
-        boundsHexagon = new Polygon(TileUtils.getVertices(this, game));
+        this.viewport = viewport;
+        boundsHexagon = new Polygon(TileUtils.getVertices(this, viewport));
     }
 
 

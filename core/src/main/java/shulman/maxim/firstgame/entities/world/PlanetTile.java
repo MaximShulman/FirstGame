@@ -2,18 +2,18 @@ package shulman.maxim.firstgame.entities.world;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import shulman.maxim.firstgame.Main;
-import shulman.maxim.firstgame.entities.tools.TileUtils;
+import shulman.maxim.firstgame.tools.TileUtils;
 
-public class PlanetTile extends Tile{
+public class PlanetTile extends Tile {
 
     private int x, y, z;
     private static Texture planetTileTextureUnselected;
     private static Texture planetTileTextureSelected;
-    private Main game;
+    private Viewport viewport;
     private Polygon boundsHexagon;
     private Planet planet;
-
 
 
     @Override
@@ -51,16 +51,15 @@ public class PlanetTile extends Tile{
     }
 
 
-
-    public PlanetTile(int x, int y, int z, Main game, Planet planet) {
+    public PlanetTile(int x, int y, int z, Viewport viewport, Planet planet) {
         planetTileTextureUnselected = new Texture("planet_hexagon_unselected.png");
         planetTileTextureSelected = new Texture("planet_hexagon_selected.png");
         this.x = x;
         this.y = y;
         this.z = z;
-        this.game = game;
+        this.viewport = viewport;
         this.planet = planet;
-        boundsHexagon = new Polygon(TileUtils.getVertices(this, game));
+        boundsHexagon = new Polygon(TileUtils.getVertices(this, viewport));
     }
 
 
