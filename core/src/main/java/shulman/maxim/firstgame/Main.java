@@ -2,6 +2,7 @@ package shulman.maxim.firstgame;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -14,9 +15,12 @@ public class Main extends Game {
     public static final int SCREEN_WIDTH = 1280;
     public static final int SCREEN_HEIGHT = 720;
 
-    BitmapFont defaultTextFont;
+    private BitmapFont defaultTextFont;
+    private InputProcessor inputProcessor;
+
+
     private FitViewport gameViewport;
-    private Camera camera;
+    private OrthographicCamera camera;
     public SpriteBatch batch;
 
     public SpriteBatch getSpriteBatch() {
@@ -31,8 +35,8 @@ public class Main extends Game {
         return defaultTextFont;
     }
 
-    public Camera getCamera() {
-        return gameViewport.getCamera();
+    public OrthographicCamera getCamera() {
+        return camera;
     }
 
     @Override
@@ -54,7 +58,7 @@ public class Main extends Game {
     @Override
     public void resize(int width, int height) {
         getGameViewport().update(width, height, true);
-        getCamera().update();
+        camera.update();
     }
 
     @Override
