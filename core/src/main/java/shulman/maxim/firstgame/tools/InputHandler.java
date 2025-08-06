@@ -26,23 +26,24 @@ public class InputHandler {
 
 
                 float centerOffsetBiggerX = viewport.getWorldWidth() - Math.max(centerPosition.x + viewport.getWorldWidth() * camera.zoom / 2, viewport.getWorldWidth());
-                float centerOffsetSmallerX = Math.max(centerPosition.x - viewport.getWorldWidth() * camera.zoom / 2, 0);
+                float centerOffsetSmallerX = Math.min(centerPosition.x - viewport.getWorldWidth() * camera.zoom / 2, 0);
 
                 float centerOffsetBiggerY = viewport.getWorldHeight() - Math.max(centerPosition.y + viewport.getWorldHeight() * camera.zoom / 2, viewport.getWorldHeight());
-                float centerOffsetSmallerY = Math.max(centerPosition.y - viewport.getWorldHeight() * camera.zoom / 2, 0);
+                float centerOffsetSmallerY = Math.min(centerPosition.y - viewport.getWorldHeight() * camera.zoom / 2, 0);
+
 
                 if (!(centerOffsetSmallerX >= 0)) {
-                    camera.translate(centerPosition.x + (currentPosition.x - newPosition.x) - viewport.getWorldWidth() * camera.zoom / 2, 0, 0);
-                } else if(!(centerOffsetBiggerX <= 0)){
-                    camera.translate(-(centerPosition.x + (currentPosition.x - newPosition.x) - viewport.getWorldWidth() * camera.zoom / 2), 0, 0);
+                    camera.translate(-centerOffsetSmallerX, 0, 0);
+                } else if(!(centerOffsetBiggerX >= 0)){
+                    camera.translate(centerOffsetBiggerX, 0, 0);
                }
                  else{
                     camera.translate(currentPosition.x - newPosition.x, 0, 0);
                 }
                 if (!(centerOffsetSmallerY >= 0)) {
-                    camera.translate(centerPosition.y + (currentPosition.y - newPosition.y) - viewport.getWorldHeight() * camera.zoom / 2, 0, 0);
-                } else if(!(centerOffsetBiggerY <= 0)){
-                    camera.translate(-(centerPosition.y + (currentPosition.y - newPosition.y) - viewport.getWorldHeight() * camera.zoom / 2), 0, 0);
+                    camera.translate(0, -centerOffsetSmallerY, 0);
+                } else if(!(centerOffsetBiggerY >= 0)){
+                    camera.translate(0, centerOffsetBiggerY, 0);
                 }
                 else{
                     camera.translate(0, currentPosition.y - newPosition.y, 0);
