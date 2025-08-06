@@ -46,6 +46,7 @@ public class Main extends Game {
         camera = new OrthographicCamera();
         gameViewport = new FitViewport(SCREEN_WIDTH / 10, SCREEN_HEIGHT / 10, camera);
         gameViewport.setCamera(camera);
+        camera.position.set(gameViewport.getWorldWidth()/2, gameViewport.getWorldHeight()/2,0);
         batch = new SpriteBatch();
         setScreen(new GameScreen(this));
     }
@@ -57,7 +58,7 @@ public class Main extends Game {
 
     @Override
     public void resize(int width, int height) {
-        getGameViewport().update(width, height, true);
+        getGameViewport().update(width, height, false);
         camera.update();
     }
 

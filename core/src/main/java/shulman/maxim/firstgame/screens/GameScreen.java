@@ -20,16 +20,18 @@ public class GameScreen implements Screen {
     private Vector2 touchPos;
     private Main game;
     private HashSet<Tile> tiles;
+    private InputAdapter myGameAdapter;
 
     public GameScreen(Main game) {
         this.game = game;
         tiles = TileUtils.populateWorld(4, game.getGameViewport());
         touchPos = new Vector2();
+        myGameAdapter = InputHandler.createGameInputAdapter(touchPos, game.getGameViewport(), game.getCamera());
     }
 
     @Override
     public void show() {
-
+        Gdx.input.setInputProcessor(myGameAdapter);
     }
 
     @Override
@@ -43,7 +45,6 @@ public class GameScreen implements Screen {
     private void input() {
         touchPos.set(Gdx.input.getX(), Gdx.input.getY());
         game.getGameViewport().unproject(touchPos);
-        InputHandler.scroll(touchPos, game.getGameViewport(), game.getCamera());
 
     }
 

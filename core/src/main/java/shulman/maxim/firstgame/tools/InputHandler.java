@@ -8,10 +8,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class InputHandler {
-
-    public static void scroll(Vector2 mousePosition, Viewport viewport, OrthographicCamera camera) {
-
-        Gdx.input.setInputProcessor(new InputAdapter() {
+    public static InputAdapter createGameInputAdapter(Vector2 mousePosition, Viewport viewport, OrthographicCamera camera) {
+        return new InputAdapter() {
             @Override
             public boolean scrolled(float amountX, float amountY) {
 
@@ -22,7 +20,7 @@ public class InputHandler {
                 camera.update();
 
                 Vector2 newPosition = viewport.unproject(new Vector2().set(Gdx.input.getX(), Gdx.input.getY()));
-                Vector2 centerPosition = viewport.unproject(new Vector2(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2));
+                Vector2 centerPosition = viewport.unproject(new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2));
 
 
                 float centerOffsetBiggerX = viewport.getWorldWidth() - Math.max(centerPosition.x + viewport.getWorldWidth() * camera.zoom / 2, viewport.getWorldWidth());
@@ -34,23 +32,67 @@ public class InputHandler {
 
                 if (!(centerOffsetSmallerX >= 0)) {
                     camera.translate(-centerOffsetSmallerX, 0, 0);
-                } else if(!(centerOffsetBiggerX >= 0)){
+                } else if (!(centerOffsetBiggerX >= 0)) {
                     camera.translate(centerOffsetBiggerX, 0, 0);
-               }
-                 else{
+                } else {
                     camera.translate(currentPosition.x - newPosition.x, 0, 0);
                 }
                 if (!(centerOffsetSmallerY >= 0)) {
                     camera.translate(0, -centerOffsetSmallerY, 0);
-                } else if(!(centerOffsetBiggerY >= 0)){
+                } else if (!(centerOffsetBiggerY >= 0)) {
                     camera.translate(0, centerOffsetBiggerY, 0);
-                }
-                else{
+                } else {
                     camera.translate(0, currentPosition.y - newPosition.y, 0);
                 }
                 camera.update();
                 return true;
             }
-        });
+        };
+    }
+
+
+    public static void scroll(Vector2 mousePosition, Viewport viewport, OrthographicCamera camera) {
+
+//        Gdx.input.setInputProcessor(new InputAdapter() {
+//            @Override
+//            public boolean scrolled(float amountX, float amountY) {
+//
+//                mousePosition.set(Gdx.input.getX(), Gdx.input.getY());
+//                Vector2 currentPosition = viewport.unproject(mousePosition);
+//                camera.zoom += amountY * 0.1f;
+//                camera.zoom = MathUtils.clamp(camera.zoom, 0.1f, 1f);
+//                camera.update();
+//
+//                Vector2 newPosition = viewport.unproject(new Vector2().set(Gdx.input.getX(), Gdx.input.getY()));
+//                Vector2 centerPosition = viewport.unproject(new Vector2(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2));
+//
+//
+//                float centerOffsetBiggerX = viewport.getWorldWidth() - Math.max(centerPosition.x + viewport.getWorldWidth() * camera.zoom / 2, viewport.getWorldWidth());
+//                float centerOffsetSmallerX = Math.min(centerPosition.x - viewport.getWorldWidth() * camera.zoom / 2, 0);
+//
+//                float centerOffsetBiggerY = viewport.getWorldHeight() - Math.max(centerPosition.y + viewport.getWorldHeight() * camera.zoom / 2, viewport.getWorldHeight());
+//                float centerOffsetSmallerY = Math.min(centerPosition.y - viewport.getWorldHeight() * camera.zoom / 2, 0);
+//
+//
+//                if (!(centerOffsetSmallerX >= 0)) {
+//                    camera.translate(-centerOffsetSmallerX, 0, 0);
+//                } else if(!(centerOffsetBiggerX >= 0)){
+//                    camera.translate(centerOffsetBiggerX, 0, 0);
+//               }
+//                 else{
+//                    camera.translate(currentPosition.x - newPosition.x, 0, 0);
+//                }
+//                if (!(centerOffsetSmallerY >= 0)) {
+//                    camera.translate(0, -centerOffsetSmallerY, 0);
+//                } else if(!(centerOffsetBiggerY >= 0)){
+//                    camera.translate(0, centerOffsetBiggerY, 0);
+//                }
+//                else{
+//                    camera.translate(0, currentPosition.y - newPosition.y, 0);
+//                }
+//                camera.update();
+//                return true;
+//            }
+//        });
     }
 }
