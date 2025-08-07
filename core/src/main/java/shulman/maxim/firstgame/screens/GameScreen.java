@@ -1,50 +1,39 @@
 package shulman.maxim.firstgame.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
-import java.util.HashSet;
 import shulman.maxim.firstgame.Main;
-import shulman.maxim.firstgame.entities.world.EmptyTile;
-import shulman.maxim.firstgame.entities.world.Tile;
-import shulman.maxim.firstgame.tools.InputHandler;
+import shulman.maxim.firstgame.input.GameInputHandler;
 import shulman.maxim.firstgame.tools.TileUtils;
+import shulman.maxim.firstgame.state.GameStateHandler;
 
 public class GameScreen implements Screen {
 
     private Vector2 touchPos;
     private Main game;
-    private HashSet<Tile> tiles;
-    private InputAdapter myGameAdapter;
+    private InputAdapter getGameInputAdapter;
+    private GameStateHandler gameStateHandler;
 
     public GameScreen(Main game) {
         this.game = game;
-        tiles = TileUtils.populateWorld(4, game.getGameViewport());
+        this.gameStateHandler = game.getGameState();
+        this.getGameInputAdapter = game.getGameInputAdapter();
         touchPos = new Vector2();
-        myGameAdapter = InputHandler.createGameInputAdapter(touchPos, game.getGameViewport(), game.getCamera());
+        //myGameAdapter = GameInputHandler.createGameInputAdapter(touchPos, game.getGameViewport(), game.getCamera());
     }
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(myGameAdapter);
+        Gdx.input.setInputProcessor(getGameInputAdapter);
     }
 
     @Override
     public void render(float v) {
-        input();
-
         draw();
-
-    }
-
-    private void input() {
-        touchPos.set(Gdx.input.getX(), Gdx.input.getY());
-        game.getGameViewport().unproject(touchPos);
 
     }
 
@@ -52,8 +41,8 @@ public class GameScreen implements Screen {
         ScreenUtils.clear(Color.WHITE);
         game.getSpriteBatch().setProjectionMatrix(game.getCamera().combined);
         game.getSpriteBatch().begin();
-        TileUtils.drawAllTiles(tiles, game.getGameViewport(), game.getSpriteBatch());
-        tiles.stream().filter(tile -> tile.getBoundsHexagon().contains(touchPos)).forEach(
+        TileUtils.drawAllTiles(gameStateHandler.getTiles(), game.getGameViewport(), game.getSpriteBatch());
+        gameStateHandler.getTiles().stream().filter(tile -> tile.getBoundsHexagon().contains(touchPos)).forEach(
             tile -> TileUtils.drawTileSelected(tile, game.getGameViewport(),
                 game.getSpriteBatch()));
         game.getSpriteBatch().end();

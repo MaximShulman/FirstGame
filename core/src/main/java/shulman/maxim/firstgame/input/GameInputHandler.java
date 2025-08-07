@@ -1,4 +1,4 @@
-package shulman.maxim.firstgame.tools;
+package shulman.maxim.firstgame.input;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -7,13 +7,17 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import shulman.maxim.firstgame.logic.GameLogicHandler;
 
-import java.awt.*;
+public class GameInputHandler {
 
-public class InputHandler {
+    private GameLogicHandler gameLogicHandler;
 
+    public GameInputHandler(GameLogicHandler gameLogicHandler) {
+        this.gameLogicHandler = gameLogicHandler;
+    }
 
-    public static InputAdapter createGameInputAdapter(Vector2 mousePosition, Viewport viewport, OrthographicCamera camera) {
+    public InputAdapter createGameInputAdapter(Viewport viewport, OrthographicCamera camera) {
         return new InputAdapter() {
             @Override
             public boolean touchUp(int screenX, int screenY, int pointer, int button) {
@@ -61,8 +65,7 @@ public class InputHandler {
 
             @Override
             public boolean scrolled(float amountX, float amountY) {
-
-                mousePosition.set(Gdx.input.getX(), Gdx.input.getY());
+                Vector2 mousePosition = new Vector2(Gdx.input.getX(), Gdx.input.getY());
                 Vector2 currentPosition = viewport.unproject(mousePosition);
                 camera.zoom += amountY * 0.1f;
                 camera.zoom = MathUtils.clamp(camera.zoom, 0.1f, 1f);

@@ -1,5 +1,6 @@
 package shulman.maxim.firstgame.entities.world;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -62,8 +63,8 @@ public class PlanetTile extends Tile {
         boundsHexagon = new Polygon(TileUtils.getVertices(this, viewport));
     }
 
-    public PlanetTile(int x, int y, int z,  Viewport viewport, Planet planet) {
-        this(x, y, z, viewport, planet, new Texture("planet_hexagon_selected.png"), new Texture("planet_hexagon_unselected.png"));
+    public PlanetTile(int x, int y, int z,  Viewport viewport, Planet planet, AssetManager assetManager) {
+        this(x, y, z, viewport, planet, assetManager.get("planet_hexagon_selected.png"), assetManager.get("planet_hexagon_unselected.png"));
     }
 
 

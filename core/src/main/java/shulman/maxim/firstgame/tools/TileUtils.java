@@ -1,5 +1,6 @@
 package shulman.maxim.firstgame.tools;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import java.util.ArrayList;
@@ -36,9 +37,8 @@ public class TileUtils {
     10% of them should be populated, the rest empty.
      */
 
-    public static HashSet<Tile> populateWorld(int size, Viewport viewport) {
-        TILE_WIDTH =
-                (viewport.getWorldHeight() - TILE_HEIGHT) / (size * 2 * 0.85f);
+    public static HashSet<Tile> populateWorld(int size, Viewport viewport, AssetManager assetManager) {
+        TILE_WIDTH = (viewport.getWorldHeight() - TILE_HEIGHT) / (size * 2 * 0.85f);
             TILE_HEIGHT = TILE_WIDTH * 0.85f;
             LINE_SIZE = TILE_WIDTH * 0.5f;
             BORDER_SIZE_COEFFICIENT = TILE_WIDTH * 0.015f * 0.5f;
@@ -51,7 +51,7 @@ public class TileUtils {
 
         HashSet<Tile> result = new HashSet<>();
 
-        createNeighbors(new EmptyTile(0, 0, 0, viewport), result, viewport);
+        createNeighbors(new EmptyTile(0, 0, 0, viewport, assetManager), result, viewport, assetManager);
         return result;
     }
 
@@ -64,25 +64,25 @@ public class TileUtils {
             && !(getViewportCoordinates(tile, viewport).y <= 0) && !tileSet.contains(tile);
     }
 
-    private static void createNeighbors(Tile tile, HashSet<Tile> tileSet, Viewport viewport) {
+    private static void createNeighbors(Tile tile, HashSet<Tile> tileSet, Viewport viewport, AssetManager assetManager) {
 
         tileSet.add(tile);
         for (int[] offset : neighborOffsets) {
-            if(canBeAdded(new EmptyTile(tile.getX() + offset[0], tile.getY() + offset[1], tile.getZ() + offset[2],viewport),viewport,tileSet)){
-                Tile neighbor = createNeighbor(tile, offset[0], offset[1], offset[2], viewport);
-                createNeighbors(neighbor, tileSet, viewport);
+            if(canBeAdded(new EmptyTile(tile.getX() + offset[0], tile.getY() + offset[1], tile.getZ() + offset[2],viewport, assetManager),viewport,tileSet)){
+                Tile neighbor = createNeighbor(tile, offset[0], offset[1], offset[2], viewport, assetManager);
+                createNeighbors(neighbor, tileSet, viewport, assetManager);
             }
 
         }
     }
-    private static Tile createNeighbor(Tile tile, int modX, int modY, int modZ, Viewport viewport){
+    private static Tile createNeighbor(Tile tile, int modX, int modY, int modZ, Viewport viewport, AssetManager assetManager){
         double random = Math.random();
         if(random > 0.05) {
             return new EmptyTile(tile.getX() + modX, tile.getY() + modY, tile.getZ() + modZ,
-                viewport);
+                viewport, assetManager);
         } else
             return new PlanetTile(tile.getX() + modX, tile.getY() + modY, tile.getZ() + modZ,
-                viewport, new Planet("placeholder"));
+                viewport, new Planet("placeholder"), assetManager);
     }
 
 
