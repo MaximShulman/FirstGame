@@ -25,7 +25,6 @@ public class GameScreen implements Screen {
         this.getGameInputAdapter = game.getGameInputAdapter();
         this.gameInputHandler = game.getGameInputHandler();
         touchPos = new Vector2();
-        //myGameAdapter = GameInputHandler.createGameInputAdapter(touchPos, game.getGameViewport(), game.getCamera());
     }
 
     @Override
@@ -46,6 +45,7 @@ public class GameScreen implements Screen {
         game.getSpriteBatch().begin();
         TileUtils.drawAllTiles(gameStateHandler.getTiles(), game.getGameViewport(), game.getSpriteBatch(), false);
         TileUtils.drawAllTiles(gameStateHandler.getSelectedTiles(), game.getGameViewport(), game.getSpriteBatch(), true);
+        TileUtils.drawAllRoutes(gameStateHandler.getRoutes(), game.getGameViewport(), game.getSpriteBatch());
         game.getSpriteBatch().end();
     }
 

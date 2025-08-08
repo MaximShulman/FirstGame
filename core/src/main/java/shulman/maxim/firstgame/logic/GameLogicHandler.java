@@ -21,6 +21,14 @@ public class GameLogicHandler {
     public void createNewRoute(PlanetTile tile){
         Route route = new Route(tile);
         gameStateHandler.getRoutes().put(tile, route);
+        gameStateHandler.getRoutes().get(tile).get(gameStateHandler.getRoutes().get(tile).size() - 1).addTile(tile);
+    }
+    public void continueRoute(Tile tile, PlanetTile origin){
+        gameStateHandler.getRoutes().get(origin).get(gameStateHandler.getRoutes().get(origin).size() - 1).addTile(tile);
+    }
+
+    public void cancelRoute(PlanetTile origin){
+        gameStateHandler.getRoutes().get(origin).remove(gameStateHandler.getRoutes().get(origin).size() - 1);
     }
     public void updateSelectedTiles(Vector2 touchPos) {
         gameStateHandler.setSelectedTiles(new HashSet<>(gameStateHandler.getTiles().stream().filter(tile -> tile.getBoundsHexagon().contains(touchPos)).toList()));

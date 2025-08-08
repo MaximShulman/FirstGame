@@ -12,15 +12,14 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class RouteMapTest {
 
     private Viewport viewport = new FitViewport(1920, 1080);
 
     @Test
-    public void routeMapTest1(){
-        PlanetTile origin = new PlanetTile(0,0,0,viewport, new Planet("placeholder", null), null, null);
+    public void routeMapTest1() {
+        PlanetTile origin = new PlanetTile(0, 0, 0, viewport, new Planet("placeholder", null), null, null);
         Route route = new Route(origin);
         RouteMap routeMap = new RouteMap();
         routeMap.put(origin, route);
@@ -29,8 +28,8 @@ class RouteMapTest {
     }
 
     @Test
-    public void routeMapTest2(){
-        PlanetTile origin = new PlanetTile(0,0,0,viewport, new Planet("placeholder", null), null, null);
+    public void routeMapTest2() {
+        PlanetTile origin = new PlanetTile(0, 0, 0, viewport, new Planet("placeholder", null), null, null);
         Route route = new Route(origin);
         RouteMap routeMap = new RouteMap();
         routeMap.put(origin, route);
@@ -42,9 +41,9 @@ class RouteMapTest {
     }
 
     @Test
-    public void routeMapTest3(){
-        PlanetTile origin = new PlanetTile(0,0,0,viewport, new Planet("placeholder", null), null, null);
-        PlanetTile originNew = new PlanetTile(1,0,0,viewport, new Planet("placeholder", null), null, null);
+    public void routeMapTest3() {
+        PlanetTile origin = new PlanetTile(0, 0, 0, viewport, new Planet("placeholder", null), null, null);
+        PlanetTile originNew = new PlanetTile(1, 0, 0, viewport, new Planet("placeholder", null), null, null);
         Route route = new Route(origin);
         RouteMap routeMap = new RouteMap();
         routeMap.put(origin, route);

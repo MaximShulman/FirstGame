@@ -4,9 +4,9 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import java.util.HashSet;
-import java.util.NoSuchElementException;
-import java.util.Set;
+
+import java.util.*;
+
 import shulman.maxim.firstgame.entities.world.EmptyTile;
 import shulman.maxim.firstgame.entities.world.Planet;
 import shulman.maxim.firstgame.entities.world.PlanetTile;
@@ -62,13 +62,18 @@ public class TileUtils {
     }
 
 
-
-    public static Tile tileFromCoordinates(Vector2 touchPos, HashSet<Tile> set){
+    public static Tile tileFromCoordinates(Vector2 touchPos, HashSet<Tile> set) {
         return set.stream().filter(tile -> tile.getBoundsHexagon().contains(touchPos)).findFirst().orElseThrow(NoSuchElementException::new);
     }
 
     public static void drawAllTiles(HashSet<Tile> list, Viewport viewport, SpriteBatch batch, boolean isSelected) {
-        list.stream().forEach(tile -> tile.drawTile(viewport, batch, isSelected));
+        list.forEach(tile -> tile.drawTile(viewport, batch, isSelected));
     }
+
+    public static void drawAllRoutes(RouteMap routes, Viewport viewport, SpriteBatch batch) {
+        routes.values().stream().flatMap(Collection::stream)
+        .forEach(route -> route.drawRoute(viewport, batch));
+    }
+
 
 }

@@ -20,18 +20,15 @@ public class GameInputHandler {
     private Viewport viewport;
     private OrthographicCamera camera;
     private ArrayList<Tile> routeList;
-    private ArrayList<Tile> routeListFinal;
-    private boolean routeCreated;
+
     Vector2 touchPos;
 
 
     public GameInputHandler(GameLogicHandler gameLogicHandler, Viewport viewport, OrthographicCamera camera) {
-        this.routeCreated = false;
         this.gameLogicHandler = gameLogicHandler;
         this.camera = camera;
         this.viewport = viewport;
         this.routeList = new ArrayList<>();
-        this.routeListFinal = new ArrayList<>();
         this.touchPos = new Vector2();
     }
 
@@ -50,7 +47,12 @@ public class GameInputHandler {
                     lastDragPosition = null;
                 }
                 if (button == Input.Buttons.LEFT){
-
+                    if(!routeList.isEmpty()) {
+                        if (!(routeList.get(routeList.size() - 1) instanceof PlanetTile)) {
+                            gameLogicHandler.cancelRoute((PlanetTile) routeList.get(0));
+                        }
+                        routeList.clear();
+                    }
                 }
                 return true;
             }
@@ -89,11 +91,9 @@ public class GameInputHandler {
                     if (routeList.isEmpty()) {
                         try {
                             Tile originTile = gameLogicHandler.updateRouteList(touchPos);
-                            if(originTile instanceof PlanetTile && !routeCreated){
+                            if(originTile instanceof PlanetTile){
                                 gameLogicHandler.createNewRoute((PlanetTile) originTile);
-                                routeCreated = true;
-                            } else {
-
+                                routeList.add(originTile);
                             }
 
                         } catch (NoSuchElementException error) {
@@ -103,8 +103,11 @@ public class GameInputHandler {
                         try {
                             Tile nextTile = gameLogicHandler.updateRouteList(touchPos);
                             if(!routeList.contains(nextTile) && !(nextTile instanceof PlanetTile)){
+                                gameLogicHandler.continueRoute(nextTile, (PlanetTile) routeList.get(0));
                                 routeList.add(nextTile);
                             } else if (!routeList.contains(nextTile)){
+                                gameLogicHandler.continueRoute(nextTile, (PlanetTile) routeList.get(0));
+                                routeList.add(nextTile);
                                 touchUp(Gdx.input.getX(), Gdx.input.getY(), Input.Buttons.LEFT, Input.Buttons.LEFT);
                             }
                         } catch (NoSuchElementException error) {
