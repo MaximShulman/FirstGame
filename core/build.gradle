@@ -27,6 +27,7 @@ dependencies {
   testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
   testImplementation platform('org.junit:junit-bom:5.9.1')
   testImplementation 'org.junit.jupiter:junit-jupiter'
+  testImplementation 'org.assertj:assertj-core:3.26.3'
 
   if(enableGraalNative == 'true') {
     implementation "io.github.berstanio:gdx-svmhelper-annotations:$graalHelperVersion"

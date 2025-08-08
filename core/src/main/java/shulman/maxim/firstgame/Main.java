@@ -21,11 +21,16 @@ public class Main extends Game {
     private GameStateHandler gameStateHandler;
     private GameLogicHandler gameLogicHandler;
 
+    public GameInputHandler getGameInputHandler() {
+        return gameInputHandler;
+    }
+
+    private GameInputHandler gameInputHandler;
+
+    private InputAdapter gameInputAdapter;
     public InputAdapter getGameInputAdapter() {
         return gameInputAdapter;
     }
-
-    private InputAdapter gameInputAdapter;
 
     private BitmapFont defaultTextFont;
     private InputProcessor inputProcessor;
@@ -81,7 +86,8 @@ public class Main extends Game {
         assetManager.finishLoading();
         gameStateHandler = new GameStateHandler(this);
         gameLogicHandler = new GameLogicHandler(gameStateHandler);
-        gameInputAdapter = new GameInputHandler(gameLogicHandler).createGameInputAdapter(this.gameViewport, this.camera);
+        gameInputHandler = new GameInputHandler(gameLogicHandler,this.gameViewport, this.camera);
+        gameInputAdapter = gameInputHandler.createGameInputAdapter();
         setScreen(new GameScreen(this));
     }
 

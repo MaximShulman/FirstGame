@@ -15,6 +15,7 @@ public class GameScreen implements Screen {
 
     private Vector2 touchPos;
     private Main game;
+    private GameInputHandler gameInputHandler;
     private InputAdapter getGameInputAdapter;
     private GameStateHandler gameStateHandler;
 
@@ -22,6 +23,7 @@ public class GameScreen implements Screen {
         this.game = game;
         this.gameStateHandler = game.getGameState();
         this.getGameInputAdapter = game.getGameInputAdapter();
+        this.gameInputHandler = game.getGameInputHandler();
         touchPos = new Vector2();
         //myGameAdapter = GameInputHandler.createGameInputAdapter(touchPos, game.getGameViewport(), game.getCamera());
     }
@@ -33,6 +35,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float v) {
+        gameInputHandler.input();
         draw();
 
     }
@@ -41,10 +44,8 @@ public class GameScreen implements Screen {
         ScreenUtils.clear(Color.WHITE);
         game.getSpriteBatch().setProjectionMatrix(game.getCamera().combined);
         game.getSpriteBatch().begin();
-        TileUtils.drawAllTiles(gameStateHandler.getTiles(), game.getGameViewport(), game.getSpriteBatch());
-        gameStateHandler.getTiles().stream().filter(tile -> tile.getBoundsHexagon().contains(touchPos)).forEach(
-            tile -> TileUtils.drawTileSelected(tile, game.getGameViewport(),
-                game.getSpriteBatch()));
+        TileUtils.drawAllTiles(gameStateHandler.getTiles(), game.getGameViewport(), game.getSpriteBatch(), false);
+        TileUtils.drawAllTiles(gameStateHandler.getSelectedTiles(), game.getGameViewport(), game.getSpriteBatch(), true);
         game.getSpriteBatch().end();
     }
 

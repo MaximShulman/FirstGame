@@ -7,22 +7,50 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import shulman.maxim.firstgame.entities.world.PlanetTile;
+import shulman.maxim.firstgame.entities.world.Tile;
 import shulman.maxim.firstgame.logic.GameLogicHandler;
+
+import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 public class GameInputHandler {
 
     private GameLogicHandler gameLogicHandler;
+    private Viewport viewport;
+    private OrthographicCamera camera;
+    private ArrayList<Tile> routeList;
+    private ArrayList<Tile> routeListFinal;
+    private boolean routeCreated;
+    Vector2 touchPos;
 
-    public GameInputHandler(GameLogicHandler gameLogicHandler) {
+
+    public GameInputHandler(GameLogicHandler gameLogicHandler, Viewport viewport, OrthographicCamera camera) {
+        this.routeCreated = false;
         this.gameLogicHandler = gameLogicHandler;
+        this.camera = camera;
+        this.viewport = viewport;
+        this.routeList = new ArrayList<>();
+        this.routeListFinal = new ArrayList<>();
+        this.touchPos = new Vector2();
     }
 
-    public InputAdapter createGameInputAdapter(Viewport viewport, OrthographicCamera camera) {
+    public void input() {
+        touchPos.set(Gdx.input.getX(), Gdx.input.getY());
+        viewport.unproject(touchPos);
+        gameLogicHandler.updateSelectedTiles(touchPos);
+
+    }
+
+    public InputAdapter createGameInputAdapter() {
         return new InputAdapter() {
             @Override
             public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-                if (button == Input.Buttons.LEFT) {
+                if (button == Input.Buttons.RIGHT) {
                     lastDragPosition = null;
+                }
+                if (button == Input.Buttons.LEFT){
+
                 }
                 return true;
             }
@@ -32,7 +60,7 @@ public class GameInputHandler {
 
             @Override
             public boolean touchDragged(int screenX, int screenY, int pointer) {
-                if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
                     float offsetX = 0;
                     float offsetY = 0;
                     if (lastDragPosition == null) {
@@ -42,13 +70,10 @@ public class GameInputHandler {
                         viewport.unproject(newDragPosition);
                         viewport.unproject(lastDragPosition);
 
-                        System.out.println("Old " + lastDragPosition);
-                        System.out.println("New " + newDragPosition);
                         offsetX = lastDragPosition.x - newDragPosition.x;
                         offsetY = lastDragPosition.y - newDragPosition.y;
                         lastDragPosition.set(screenX, screenY);
                     }
-                    System.out.println(offsetX);
                     Vector2 centerPosition = viewport.unproject(new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2));
                     if (offsetX + centerPosition.x + viewport.getWorldWidth() * camera.zoom / 2 <= viewport.getWorldWidth() &&
                         offsetX + centerPosition.x - viewport.getWorldWidth() * camera.zoom / 2 >= 0) {
@@ -59,6 +84,33 @@ public class GameInputHandler {
                         camera.translate(0, offsetY, 0);
                     }
                     camera.update();
+                }
+                if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                    if (routeList.isEmpty()) {
+                        try {
+                            Tile originTile = gameLogicHandler.updateRouteList(touchPos);
+                            if(originTile instanceof PlanetTile && !routeCreated){
+                                gameLogicHandler.createNewRoute((PlanetTile) originTile);
+                                routeCreated = true;
+                            } else {
+
+                            }
+
+                        } catch (NoSuchElementException error) {
+                            System.out.println("Nothing happened");
+                        }
+                    } else {
+                        try {
+                            Tile nextTile = gameLogicHandler.updateRouteList(touchPos);
+                            if(!routeList.contains(nextTile) && !(nextTile instanceof PlanetTile)){
+                                routeList.add(nextTile);
+                            } else if (!routeList.contains(nextTile)){
+                                touchUp(Gdx.input.getX(), Gdx.input.getY(), Input.Buttons.LEFT, Input.Buttons.LEFT);
+                            }
+                        } catch (NoSuchElementException error) {
+                            System.out.println("Nothing happened");
+                        }
+                    }
                 }
                 return true;
             }

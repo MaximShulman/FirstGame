@@ -60,7 +60,7 @@ public class PlanetTile extends Tile {
         this.z = z;
         this.viewport = viewport;
         this.planet = planet;
-        boundsHexagon = new Polygon(TileUtils.getVertices(this, viewport));
+        boundsHexagon = new Polygon(this.getVertices(viewport));
     }
 
     public PlanetTile(int x, int y, int z,  Viewport viewport, Planet planet, AssetManager assetManager) {

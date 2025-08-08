@@ -53,7 +53,7 @@ public class EmptyTile extends Tile {
         this.y = y;
         this.z = z;
         this.viewport = viewport;
-        boundsHexagon = new Polygon(TileUtils.getVertices(this, viewport));
+        boundsHexagon = new Polygon(this.getVertices(viewport));
     }
 
     public EmptyTile(int x, int y, int z, Viewport viewport, AssetManager assetManager) {
