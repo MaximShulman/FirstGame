@@ -25,6 +25,6 @@ public class RouteMap extends HashMap<PlanetTile, ArrayList<Route>> {
     }
 
     @Override public String toString(){
-        return entrySet().stream().map(entry -> entry.toString()).collect(Collectors.joining(", ", "{", "}"));
+        return entrySet().stream().map(entry -> entry.toString()).collect(Collectors.joining("} ,{", "{", "}"));
     }
 }

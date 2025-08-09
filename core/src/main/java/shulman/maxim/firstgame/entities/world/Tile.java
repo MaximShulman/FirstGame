@@ -66,7 +66,7 @@ public abstract class Tile {
     - r (radius)
 
     A tile in the center has the coordinates 0,0
-    The tile to the upper right is 101, -1
+    The tile to the upper right is 0,1,-1
     To the bottom right is -1,1,0
     To the bottom is -1,0,1
     To the bottom left is 0,-1,1

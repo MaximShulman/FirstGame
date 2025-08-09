@@ -1,5 +1,7 @@
 package shulman.maxim.firstgame.state;
 
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import shulman.maxim.firstgame.Main;
 import shulman.maxim.firstgame.entities.routes.Route;
 import shulman.maxim.firstgame.entities.world.PlanetTile;
@@ -41,8 +43,13 @@ public class GameStateHandler {
         return tiles;
     }
 
-    public GameStateHandler(Main game){
-        tiles = TileUtils.populateWorld(15, game.getGameViewport(), game.getAssetManager());
+    public GameStateHandler(Viewport viewport, AssetManager assetManager){
+        tiles = TileUtils.populateWorld(15, viewport, assetManager);
+        routes = new RouteMap();
+    }
+
+    public GameStateHandler(Viewport viewport, AssetManager assetManager, HashSet<Tile> tiles){
+        this.tiles = tiles;
         routes = new RouteMap();
     }
 }

@@ -29,21 +29,29 @@ public class Route {
     }
 
     public Route(PlanetTile origin) {
+        this(origin,true);
+    }
+
+    public Route(PlanetTile origin, boolean loadPixmap) {
         this.origin = origin;
         this.list = new ArrayList<>();
-        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pixmap.setColor(Color.BLACK);
-        pixmap.fill();
-        Texture texture = new Texture(pixmap);
-        this.region = new TextureRegion(texture);
-        pixmap.dispose();
+        if (loadPixmap) {
+            Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+            pixmap.setColor(Color.BLACK);
+            pixmap.fill();
+            Texture texture = new Texture(pixmap);
+            this.region = new TextureRegion(texture);
+            pixmap.dispose();
+            texture.dispose();
+        }
     }
 
-    public void addTile(Tile tile){
+    public Route addTile(Tile tile) {
         list.add(tile);
+        return this;
     }
 
-    public void drawRoute(Viewport viewport, SpriteBatch batch){
+    public void drawRoute(Viewport viewport, SpriteBatch batch) {
         for (int i = 0; i < list.size() - 1; i++) {
             ShapeDrawer drawer = new ShapeDrawer(batch, region);
             drawer.line(list.get(i).getViewportCoordinates(viewport).x() + TILE_WIDTH / 2, list.get(i).getViewportCoordinates(viewport).y() + TILE_HEIGHT / 2,
@@ -52,7 +60,7 @@ public class Route {
 
     }
 
-    public String toString(){
+    public String toString() {
         return list.toString();
     }
 }

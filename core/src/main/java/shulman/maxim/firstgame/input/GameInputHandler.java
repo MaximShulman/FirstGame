@@ -45,7 +45,7 @@ public class GameInputHandler {
                     lastDragPosition = null;
                 }
                 if (button == Input.Buttons.LEFT){
-                    gameLogicHandler.endRoute();
+                    gameLogicHandler.getRouteLogic().endRoute();
                 }
                 return true;
             }
@@ -81,7 +81,7 @@ public class GameInputHandler {
                     camera.update();
                 }
                 if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-                    gameLogicHandler.updateRouteList(touchPos);
+                    gameLogicHandler.getRouteLogic().updateRouteList(touchPos, true);
                 }
                 return true;
 
