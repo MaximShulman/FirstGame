@@ -19,7 +19,6 @@ public class GameInputHandler {
     private GameLogicHandler gameLogicHandler;
     private Viewport viewport;
     private OrthographicCamera camera;
-    private ArrayList<Tile> routeList;
 
     Vector2 touchPos;
 
@@ -28,7 +27,6 @@ public class GameInputHandler {
         this.gameLogicHandler = gameLogicHandler;
         this.camera = camera;
         this.viewport = viewport;
-        this.routeList = new ArrayList<>();
         this.touchPos = new Vector2();
     }
 
@@ -47,12 +45,7 @@ public class GameInputHandler {
                     lastDragPosition = null;
                 }
                 if (button == Input.Buttons.LEFT){
-                    if(!routeList.isEmpty()) {
-                        if (!(routeList.get(routeList.size() - 1) instanceof PlanetTile)) {
-                            gameLogicHandler.cancelRoute((PlanetTile) routeList.get(0));
-                        }
-                        routeList.clear();
-                    }
+                    gameLogicHandler.endRoute();
                 }
                 return true;
             }
@@ -88,34 +81,10 @@ public class GameInputHandler {
                     camera.update();
                 }
                 if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-                    if (routeList.isEmpty()) {
-                        try {
-                            Tile originTile = gameLogicHandler.updateRouteList(touchPos);
-                            if(originTile instanceof PlanetTile){
-                                gameLogicHandler.createNewRoute((PlanetTile) originTile);
-                                routeList.add(originTile);
-                            }
-
-                        } catch (NoSuchElementException error) {
-                            System.out.println("Nothing happened");
-                        }
-                    } else {
-                        try {
-                            Tile nextTile = gameLogicHandler.updateRouteList(touchPos);
-                            if(!routeList.contains(nextTile) && !(nextTile instanceof PlanetTile)){
-                                gameLogicHandler.continueRoute(nextTile, (PlanetTile) routeList.get(0));
-                                routeList.add(nextTile);
-                            } else if (!routeList.contains(nextTile)){
-                                gameLogicHandler.continueRoute(nextTile, (PlanetTile) routeList.get(0));
-                                routeList.add(nextTile);
-                                touchUp(Gdx.input.getX(), Gdx.input.getY(), Input.Buttons.LEFT, Input.Buttons.LEFT);
-                            }
-                        } catch (NoSuchElementException error) {
-                            System.out.println("Nothing happened");
-                        }
-                    }
+                    gameLogicHandler.updateRouteList(touchPos);
                 }
                 return true;
+
             }
 
             @Override

@@ -51,4 +51,8 @@ public class Route {
         }
 
     }
+
+    public String toString(){
+        return list.toString();
+    }
 }

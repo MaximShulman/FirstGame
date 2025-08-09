@@ -4,6 +4,7 @@ import shulman.maxim.firstgame.entities.routes.Route;
 import shulman.maxim.firstgame.entities.world.PlanetTile;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class RouteMap extends HashMap<PlanetTile, ArrayList<Route>> {
@@ -21,5 +22,9 @@ public class RouteMap extends HashMap<PlanetTile, ArrayList<Route>> {
 
     public ArrayList<Route> put(PlanetTile key, Route value) {
         return this.put(key, new ArrayList<>(List.of(value)));
+    }
+
+    @Override public String toString(){
+        return entrySet().stream().map(entry -> entry.toString()).collect(Collectors.joining(", ", "{", "}"));
     }
 }

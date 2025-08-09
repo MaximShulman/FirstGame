@@ -85,7 +85,7 @@ public class Main extends Game {
         assetManager.load("planet_hexagon_selected.png", Texture.class);
         assetManager.finishLoading();
         gameStateHandler = new GameStateHandler(this);
-        gameLogicHandler = new GameLogicHandler(gameStateHandler);
+        gameLogicHandler = new GameLogicHandler(gameStateHandler, this.gameViewport);
         gameInputHandler = new GameInputHandler(gameLogicHandler,this.gameViewport, this.camera);
         gameInputAdapter = gameInputHandler.createGameInputAdapter();
         setScreen(new GameScreen(this));

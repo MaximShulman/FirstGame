@@ -118,6 +118,6 @@ public abstract class Tile {
     }
 
     @Override public String toString(){
-        return getX() + ", " + getY() + ", " + getZ();
+        return "[" + getX() + ", " + getY() + ", " + getZ() + "]";
     }
 }
