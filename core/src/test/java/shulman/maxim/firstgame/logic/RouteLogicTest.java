@@ -41,11 +41,16 @@ class RouteLogicTest {
     private GameStateHandler gameStateHandler = new GameStateHandler(viewport, new AssetManager(), tiles);
 
     private GameLogicHandler gameLogicHandler = new GameLogicHandler(gameStateHandler, viewport);
-    @BeforeEach
-    public void setGameStateHandler(){
-        gameStateHandler = new GameStateHandler(viewport, new AssetManager(), tiles);
-    }
     private RouteLogic routeLogic = gameLogicHandler.getRouteLogic();
+
+    @BeforeEach
+    public void setHandlers(){
+        gameStateHandler = new GameStateHandler(viewport, new AssetManager(), tiles);
+        gameLogicHandler = new GameLogicHandler(gameStateHandler, viewport);
+        routeLogic = gameLogicHandler.getRouteLogic();
+    }
+
+
     @Test
     public void routeLogicTest1(){
        assertTrue(gameStateHandler.getRoutes().isEmpty());
@@ -53,18 +58,23 @@ class RouteLogicTest {
 
     @Test
     public void routeLogicTest2(){
-        Vector2 tilePosition = new Vector2(tile0.getViewportCoordinates(viewport).x(),tile0.getViewportCoordinates(viewport).y());
+        Vector2 tilePosition = new Vector2(tile0.getBoundsCoordinates(viewport).x(),tile0.getBoundsCoordinates(viewport).y());
         routeLogic.updateRouteList(tilePosition, false);
+        assertThat(gameStateHandler.getRoutes().size()).isEqualTo(1);
+        routeLogic.endRoute();
         assertTrue(gameStateHandler.getRoutes().isEmpty());
+
 
     }
 
     @Test
     public void routeLogicTest3(){
-        Vector2 tilePosition = new Vector2(tile0.getViewportCoordinates(viewport).x(),tile0.getViewportCoordinates(viewport).y());
+        Vector2 tilePosition = new Vector2(tile0.getBoundsCoordinates(viewport).x(),tile0.getBoundsCoordinates(viewport).y());
         routeLogic.updateRouteList(tilePosition, false);
-        Vector2 nextTilePosition = new Vector2(tile1.getViewportCoordinates(viewport).x(),tile1.getViewportCoordinates(viewport).y());
+        Vector2 nextTilePosition = new Vector2(tile1.getBoundsCoordinates(viewport).x(),tile1.getBoundsCoordinates(viewport).y());
         routeLogic.updateRouteList(nextTilePosition, false);
+        assertThat(gameStateHandler.getRoutes().size()).isEqualTo(1);
+        routeLogic.endRoute();
         assertTrue(gameStateHandler.getRoutes().isEmpty());
 
 
@@ -72,12 +82,15 @@ class RouteLogicTest {
 
     @Test
     public void routeLogicTest4(){
-        Vector2 tilePosition = new Vector2(tile0.getViewportCoordinates(viewport).x(),tile0.getViewportCoordinates(viewport).y());
+        Vector2 tilePosition = new Vector2(tile0.getBoundsCoordinates(viewport).x(),tile0.getBoundsCoordinates(viewport).y());
         routeLogic.updateRouteList(tilePosition, false);
-        Vector2 nextTilePosition = new Vector2(tile3.getViewportCoordinates(viewport).x(),tile3.getViewportCoordinates(viewport).y());
+        Vector2 nextTilePosition = new Vector2(tile3.getBoundsCoordinates(viewport).x(),tile3.getBoundsCoordinates(viewport).y());
         routeLogic.updateRouteList(nextTilePosition, false);
         assertThat(gameStateHandler.getRoutes().size()).isEqualTo(1);
-        assertThat(gameStateHandler.getRoutes()).containsAllEntriesOf(Map.of((PlanetTile)tile0, new ArrayList<>(List.of(new Route((PlanetTile) tile0).addTile(tile0).addTile(tile3)))));
+        assertThat(gameStateHandler.getRoutes().get(tile0).size()).isEqualTo(1);
+        routeLogic.endRoute();
+        assertThat(gameStateHandler.getRoutes().size()).isEqualTo(1);
+        assertThat(gameStateHandler.getRoutes()).containsAllEntriesOf(new HashMap<>(Map.of((PlanetTile)tile0, new ArrayList<>(List.of(new Route((PlanetTile) tile0, false).addTile(tile0).addTile(tile3))))));
 
 
     }

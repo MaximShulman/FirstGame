@@ -20,7 +20,7 @@ class RouteMapTest {
     @Test
     public void routeMapTest1() {
         PlanetTile origin = new PlanetTile(0, 0, 0, viewport, new Planet("placeholder", null), null, null);
-        Route route = new Route(origin);
+        Route route = new Route(origin, false);
         RouteMap routeMap = new RouteMap();
         routeMap.put(origin, route);
         assertThat(routeMap.size()).isEqualTo(1);
@@ -30,10 +30,10 @@ class RouteMapTest {
     @Test
     public void routeMapTest2() {
         PlanetTile origin = new PlanetTile(0, 0, 0, viewport, new Planet("placeholder", null), null, null);
-        Route route = new Route(origin);
+        Route route = new Route(origin, false);
         RouteMap routeMap = new RouteMap();
         routeMap.put(origin, route);
-        Route newRoute = new Route(origin);
+        Route newRoute = new Route(origin, false);
         routeMap.put(origin, newRoute);
         assertThat(routeMap.size()).isEqualTo(1);
         assertThat(routeMap.get(origin).size()).isEqualTo(2);
@@ -44,10 +44,10 @@ class RouteMapTest {
     public void routeMapTest3() {
         PlanetTile origin = new PlanetTile(0, 0, 0, viewport, new Planet("placeholder", null), null, null);
         PlanetTile originNew = new PlanetTile(1, 0, 0, viewport, new Planet("placeholder", null), null, null);
-        Route route = new Route(origin);
+        Route route = new Route(origin, false);
         RouteMap routeMap = new RouteMap();
         routeMap.put(origin, route);
-        Route newRoute = new Route(origin);
+        Route newRoute = new Route(origin, false);
         routeMap.put(originNew, newRoute);
         assertThat(routeMap.size()).isEqualTo(2);
         assertThat(routeMap).containsAllEntriesOf(Map.of(origin, new ArrayList<Route>(List.of(route)), originNew, new ArrayList<Route>(List.of(newRoute))));

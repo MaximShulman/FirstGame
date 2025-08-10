@@ -33,7 +33,11 @@ public class GameInputHandler {
     public void input() {
         touchPos.set(Gdx.input.getX(), Gdx.input.getY());
         viewport.unproject(touchPos);
-        gameLogicHandler.updateSelectedTiles(touchPos);
+        try {
+            gameLogicHandler.updateSelectedTiles(touchPos);
+        } catch (NoSuchElementException e){
+            System.out.println("No tiles selected");
+        }
 
     }
 

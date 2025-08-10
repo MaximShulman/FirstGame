@@ -11,6 +11,7 @@ import shulman.maxim.firstgame.entities.world.Tile;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static shulman.maxim.firstgame.entities.world.Tile.TILE_HEIGHT;
 import static shulman.maxim.firstgame.entities.world.Tile.TILE_WIDTH;
@@ -19,6 +20,7 @@ public class Route {
     private PlanetTile origin;
     private ArrayList<Tile> list;
     private TextureRegion region;
+    private PlanetTile destination;
 
     public PlanetTile getOrigin() {
         return origin;
@@ -29,7 +31,7 @@ public class Route {
     }
 
     public Route(PlanetTile origin) {
-        this(origin,true);
+        this(origin, true);
     }
 
     public Route(PlanetTile origin, boolean loadPixmap) {
@@ -47,6 +49,10 @@ public class Route {
     }
 
     public Route addTile(Tile tile) {
+        if (!list.isEmpty() && tile instanceof PlanetTile) {
+            destination = (PlanetTile) tile;
+        }
+
         list.add(tile);
         return this;
     }
@@ -59,6 +65,21 @@ public class Route {
         }
 
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Route route = (Route) o;
+        return Objects.equals(origin, route.origin) && Objects.equals(destination, route.destination);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(origin, destination);
+    }
+
+    @Override
 
     public String toString() {
         return list.toString();

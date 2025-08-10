@@ -4,8 +4,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import shulman.maxim.firstgame.Main;
-import shulman.maxim.firstgame.tools.TileUtils;
+import shulman.maxim.firstgame.tools.Hexagon;
 
 public class PlanetTile extends Tile {
 

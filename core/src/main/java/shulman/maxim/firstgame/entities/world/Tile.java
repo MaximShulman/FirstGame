@@ -4,8 +4,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import shulman.maxim.firstgame.Main;
-import shulman.maxim.firstgame.tools.TileUtils;
 import shulman.maxim.firstgame.tools.ViewportCoordinates;
 
 public abstract class Tile {
@@ -47,6 +45,7 @@ public abstract class Tile {
     public Polygon getBoundsHexagon() {
         return boundsHexagon;
     }
+
     public <T extends Tile> void drawTile(Viewport viewport, SpriteBatch batch, boolean isSelected) {
 
         ViewportCoordinates coordinates = this.getViewportCoordinates(viewport);
@@ -88,8 +87,16 @@ public abstract class Tile {
         return new ViewportCoordinates(x, y);
     }
 
+    public <T extends Tile> ViewportCoordinates getBoundsCoordinates(Viewport viewport) {
+        ViewportCoordinates coordinates = this.getViewportCoordinates(viewport);
+        float x = coordinates.x() + BORDER_SIZE_COEFFICIENT * 2;
+        float y = coordinates.y() + TILE_HEIGHT / 2;
 
-    public <T extends Tile> float[] getVertices(Viewport viewport) {
+        return new ViewportCoordinates(x, y);
+
+    }
+
+    <T extends Tile> float[] getVertices(Viewport viewport) {
 
         ViewportCoordinates coordinates = this.getViewportCoordinates(viewport);
         float[] verticeArray = new float[]{coordinates.x() + BORDER_SIZE_COEFFICIENT * 2, coordinates.y() + TILE_HEIGHT / 2, coordinates.x() + TILE_WIDTH / 4 + BORDER_SIZE_COEFFICIENT, coordinates.y() + TILE_HEIGHT - BORDER_SIZE_COEFFICIENT, coordinates.x() + TILE_WIDTH / 4 + TILE_WIDTH / 2 - BORDER_SIZE_COEFFICIENT, coordinates.y() + TILE_HEIGHT - BORDER_SIZE_COEFFICIENT, coordinates.x() + TILE_WIDTH - BORDER_SIZE_COEFFICIENT * 2, coordinates.y() + TILE_HEIGHT / 2, coordinates.x() + TILE_WIDTH / 4 + TILE_WIDTH / 2 - BORDER_SIZE_COEFFICIENT, coordinates.y() + BORDER_SIZE_COEFFICIENT, coordinates.x() + TILE_WIDTH / 4 + BORDER_SIZE_COEFFICIENT, coordinates.y() + BORDER_SIZE_COEFFICIENT, coordinates.x() + BORDER_SIZE_COEFFICIENT * 2, coordinates.y() + TILE_HEIGHT / 2};
@@ -117,7 +124,8 @@ public abstract class Tile {
         return result;
     }
 
-    @Override public String toString(){
+    @Override
+    public String toString() {
         return "[" + getX() + ", " + getY() + ", " + getZ() + "]";
     }
 }
