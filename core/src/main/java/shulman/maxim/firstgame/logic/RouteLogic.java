@@ -52,6 +52,8 @@ public class RouteLogic {
                     gameStateHandler.getRoutes().get(origin).get(gameStateHandler.getRoutes().get(origin).size() - 1).addTile(nextTile);
                     routeList.add(nextTile);
                     endRoute();
+                } else {
+                    //gameStateHandler.getRoutes().get(origin).get(gameStateHandler.getRoutes().get(origin).size() - 1).removeTile(nextTile);
                 }
             } catch (NoSuchElementException error) {
                 System.out.println("Nothing happened");
@@ -61,7 +63,8 @@ public class RouteLogic {
     }
     public void endRoute(){
         if(!routeList.isEmpty()) {
-            if (!(routeList.get(routeList.size() - 1) instanceof PlanetTile) || routeList.size() == 1) {
+            if (!(routeList.get(routeList.size() - 1) instanceof PlanetTile) || routeList.size() == 1 ||
+            gameStateHandler.getRoutes().get((PlanetTile) routeList.get(0)).stream().filter(route -> route.getList().contains(routeList.get(routeList.size() - 1))).count() > 1) {
                 gameStateHandler.getRoutes().get(origin).remove(gameStateHandler.getRoutes().get(origin).size() - 1);
 
                 if(gameStateHandler.getRoutes().get(origin).isEmpty()){

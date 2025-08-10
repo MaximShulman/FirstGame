@@ -57,6 +57,11 @@ public class Route {
         return this;
     }
 
+    public Route removeTile(Tile tile) {
+        list.remove(tile);
+        return this;
+    }
+
     public void drawRoute(Viewport viewport, SpriteBatch batch) {
         for (int i = 0; i < list.size() - 1; i++) {
             ShapeDrawer drawer = new ShapeDrawer(batch, region);
