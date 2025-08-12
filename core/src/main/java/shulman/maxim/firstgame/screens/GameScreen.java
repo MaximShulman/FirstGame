@@ -1,6 +1,7 @@
 package shulman.maxim.firstgame.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -35,6 +36,10 @@ public class GameScreen implements Screen {
     @Override
     public void render(float v) {
         gameInputHandler.input();
+        if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
+            game.setScreen(new MainMenuScreen(game));
+        }
+        game.getGameViewport().apply();
         draw();
 
     }

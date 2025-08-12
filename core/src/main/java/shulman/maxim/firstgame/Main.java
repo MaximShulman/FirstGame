@@ -1,6 +1,7 @@
 package shulman.maxim.firstgame;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
@@ -8,16 +9,19 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import shulman.maxim.firstgame.input.GameInputHandler;
 import shulman.maxim.firstgame.logic.GameLogicHandler;
 import shulman.maxim.firstgame.screens.GameScreen;
+import shulman.maxim.firstgame.screens.MainMenuScreen;
 import shulman.maxim.firstgame.state.GameStateHandler;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends Game {
-    public static final int SCREEN_WIDTH = 1280;
-    public static final int SCREEN_HEIGHT = 720;
+    private static final int SCREEN_WIDTH = 128;
+    private static final int SCREEN_HEIGHT = 72;
+    private GameScreen gameScreen;
     private GameStateHandler gameStateHandler;
     private GameLogicHandler gameLogicHandler;
 
@@ -37,6 +41,10 @@ public class Main extends Game {
 
     private AssetManager assetManager;
     private FitViewport gameViewport;
+    private FitViewport mainMenuViewport;
+    public FitViewport getMainMenuViewport() {
+        return mainMenuViewport;
+    }
 
     public AssetManager getAssetManager() {
         return assetManager;
@@ -44,6 +52,7 @@ public class Main extends Game {
 
     private OrthographicCamera camera;
     public SpriteBatch batch;
+
 
     public GameStateHandler getGameState() {
         return gameStateHandler;
@@ -60,13 +69,19 @@ public class Main extends Game {
         return gameViewport;
     }
 
-    public BitmapFont getFont() {
-        return defaultTextFont;
+    public GameScreen getGameScreen() {
+        return gameScreen;
+    }
+
+    public void setGameScreen() {
+        this.setScreen(gameScreen);
     }
 
     public OrthographicCamera getCamera() {
         return camera;
     }
+
+
 
     @Override
     public void create() {
@@ -74,11 +89,13 @@ public class Main extends Game {
         //defaultTextFont.getData().setScale(gameViewport.getWorldHeight() / Gdx.graphics.getHeight());
         assetManager = new AssetManager();
         camera = new OrthographicCamera();
-        gameViewport = new FitViewport(SCREEN_WIDTH / 10, SCREEN_HEIGHT / 10, camera);
+        gameViewport = new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT, camera);
+        mainMenuViewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         gameViewport.setCamera(camera);
         camera.position.set(gameViewport.getWorldWidth()/2, gameViewport.getWorldHeight()/2,0);
         batch = new SpriteBatch();
 
+        assetManager.load("ui/metal-ui.json", Skin.class);
         assetManager.load("empty_hexagon_unselected.png", Texture.class);
         assetManager.load("empty_hexagon_selected.png", Texture.class);
         assetManager.load("planet_hexagon_unselected.png", Texture.class);
@@ -88,7 +105,8 @@ public class Main extends Game {
         gameLogicHandler = new GameLogicHandler(gameStateHandler, this.gameViewport);
         gameInputHandler = new GameInputHandler(gameLogicHandler,this.gameViewport, this.camera);
         gameInputAdapter = gameInputHandler.createGameInputAdapter();
-        setScreen(new GameScreen(this));
+        gameScreen = new GameScreen(this);
+        setScreen(new MainMenuScreen(this));
     }
 
     @Override
@@ -99,8 +117,11 @@ public class Main extends Game {
     @Override
     public void resize(int width, int height) {
         getGameViewport().update(width, height, false);
+        getMainMenuViewport().update(width,height,true);
         camera.update();
     }
+
+
 
     @Override
     public void dispose(){
