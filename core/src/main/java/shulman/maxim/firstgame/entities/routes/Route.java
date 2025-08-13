@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.CatmullRomSpline;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import shulman.maxim.firstgame.entities.world.PlanetTile;
 import shulman.maxim.firstgame.entities.world.Tile;
@@ -21,6 +23,7 @@ public class Route {
     private ArrayList<Tile> list;
     private TextureRegion region;
     private PlanetTile destination;
+    private ArrayList<Vector2> controlPoints;
 
     public PlanetTile getOrigin() {
         return origin;
@@ -37,6 +40,7 @@ public class Route {
     public Route(PlanetTile origin, boolean loadPixmap) {
         this.origin = origin;
         this.list = new ArrayList<>();
+        this.controlPoints = new ArrayList<>();
         if (loadPixmap) {
             Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
             pixmap.setColor(Color.BLACK);
@@ -51,6 +55,7 @@ public class Route {
     public Route addTile(Tile tile) {
         if (!list.isEmpty() && tile instanceof PlanetTile) {
             destination = (PlanetTile) tile;
+            list.add(destination);
         }
 
         list.add(tile);
@@ -63,10 +68,37 @@ public class Route {
     }
 
     public void drawRoute(Viewport viewport, SpriteBatch batch) {
+        ShapeDrawer drawer = new ShapeDrawer(batch, region);
+
         for (int i = 0; i < list.size() - 1; i++) {
-            ShapeDrawer drawer = new ShapeDrawer(batch, region);
-            drawer.line(list.get(i).getViewportCoordinates(viewport).x() + TILE_WIDTH / 2, list.get(i).getViewportCoordinates(viewport).y() + TILE_HEIGHT / 2,
-                list.get(i + 1).getViewportCoordinates(viewport).x() + TILE_WIDTH / 2, list.get(i + 1).getViewportCoordinates(viewport).y() + TILE_HEIGHT / 2, 0.2f);
+            Vector2 controlPoint = new Vector2(list.get(i).getViewportCoordinates(viewport).x() + TILE_WIDTH / 2, list.get(i).getViewportCoordinates(viewport).y() + TILE_HEIGHT / 2);
+            if (!controlPoints.contains(controlPoint)) {
+                controlPoints.add(controlPoint);
+                Vector2 controlPoint2 = new Vector2(list.get(i).getViewportCoordinates(viewport).x() + TILE_WIDTH / 2 + ((list.get(i + 1).getViewportCoordinates(viewport).x() - list.get(i).getViewportCoordinates(viewport).x()) / 4),
+                    list.get(i).getViewportCoordinates(viewport).y() + TILE_HEIGHT / 2 + ((list.get(i + 1).getViewportCoordinates(viewport).y() - list.get(i).getViewportCoordinates(viewport).y()) / 4));
+                Vector2 controlPoint3 = new Vector2(list.get(i).getViewportCoordinates(viewport).x() + TILE_WIDTH / 2 + ((list.get(i + 1).getViewportCoordinates(viewport).x() - list.get(i).getViewportCoordinates(viewport).x()) / 2),
+                    list.get(i).getViewportCoordinates(viewport).y() + TILE_HEIGHT / 2 + ((list.get(i + 1).getViewportCoordinates(viewport).y() - list.get(i).getViewportCoordinates(viewport).y()) / 2));
+                Vector2 controlPoint4 = new Vector2(list.get(i).getViewportCoordinates(viewport).x() + TILE_WIDTH / 2 + ((list.get(i + 1).getViewportCoordinates(viewport).x() - list.get(i).getViewportCoordinates(viewport).x()) / 4 * 3),
+                    list.get(i).getViewportCoordinates(viewport).y() + TILE_HEIGHT / 2 + ((list.get(i + 1).getViewportCoordinates(viewport).y() - list.get(i).getViewportCoordinates(viewport).y()) / 4 * 3));
+
+                controlPoints.add(controlPoint2);
+                controlPoints.add(controlPoint3);
+                controlPoints.add(controlPoint4);
+            }
+        }
+
+        if (controlPoints.size() >= 4) {
+            CatmullRomSpline<Vector2> spline = new CatmullRomSpline<>(controlPoints.toArray(Vector2[]::new), false);
+
+            int samples = controlPoints.size();
+            Vector2[] points = new Vector2[samples];
+            for (int i = 0; i < samples; i++) {
+                points[i] = new Vector2();
+                spline.valueAt(points[i], (float) i / (samples - 1));
+            }
+            for (int i = 0; i < samples - 1; i++) {
+                drawer.line(points[i].x, points[i].y, points[i + 1].x, points[i + 1].y, 0.1f);
+            }
         }
 
     }

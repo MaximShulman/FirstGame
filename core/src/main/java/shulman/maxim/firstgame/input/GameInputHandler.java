@@ -4,15 +4,19 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import shulman.maxim.firstgame.entities.world.PlanetTile;
 import shulman.maxim.firstgame.entities.world.Tile;
 import shulman.maxim.firstgame.logic.GameLogicHandler;
+import shulman.maxim.firstgame.tools.TileUtils;
 
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
+
+import static shulman.maxim.firstgame.entities.world.Tile.TILE_WIDTH;
 
 public class GameInputHandler {
 
@@ -35,10 +39,82 @@ public class GameInputHandler {
         viewport.unproject(touchPos);
         try {
             gameLogicHandler.updateSelectedTiles(touchPos);
-        } catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             System.out.println("No tiles selected");
         }
 
+
+    }
+
+    public GestureDetector.GestureListener DoubleClickDetector() {
+        /*
+         return new ClickListener(){
+
+           @Override
+           public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+               {
+                   if(getTapCount() == 2){
+                       System.out.println("Boom");
+                       return true;
+                   }
+               }
+               return false;
+           }
+       };
+         */
+        return new GestureDetector.GestureListener() {
+            @Override
+            public boolean touchDown(float v, float v1, int i, int i1) {
+                return false;
+            }
+
+            @Override
+            public boolean tap(float x, float y, int count, int button) {
+//                if (count == 2) {
+//                    System.out.println("Double tap!");
+//                    Tile clickedTile = gameLogicHandler.tileFromCoordinatesDefault(viewport.unproject(new Vector2(x, y)));
+//                    camera.translate(clickedTile.getX() + TILE_WIDTH / 2, clickedTile.getY());
+//                    camera.zoom = 0.1f;
+//                    return true;
+//                }
+                return false;
+            }
+
+            @Override
+            public boolean longPress(float v, float v1) {
+                return false;
+            }
+
+            @Override
+            public boolean fling(float v, float v1, int i) {
+                return false;
+            }
+
+            @Override
+            public boolean pan(float v, float v1, float v2, float v3) {
+                return false;
+            }
+
+            @Override
+            public boolean panStop(float v, float v1, int i, int i1) {
+                return false;
+            }
+
+            @Override
+            public boolean zoom(float v, float v1) {
+                return false;
+            }
+
+            @Override
+            public boolean pinch(Vector2 vector2, Vector2 vector21, Vector2 vector22, Vector2 vector23) {
+                return false;
+            }
+
+            @Override
+            public void pinchStop() {
+
+            }
+        };
 
 
     }
@@ -50,7 +126,7 @@ public class GameInputHandler {
                 if (button == Input.Buttons.RIGHT) {
                     lastDragPosition = null;
                 }
-                if (button == Input.Buttons.LEFT){
+                if (button == Input.Buttons.LEFT) {
                     gameLogicHandler.getRouteLogic().endRoute();
                 }
                 return true;
@@ -86,7 +162,7 @@ public class GameInputHandler {
                     }
                     camera.update();
                 }
-                if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                     gameLogicHandler.getRouteLogic().updateRouteList(touchPos, true);
                 }
                 return true;

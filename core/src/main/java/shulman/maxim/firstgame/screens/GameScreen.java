@@ -1,10 +1,8 @@
 package shulman.maxim.firstgame.screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import shulman.maxim.firstgame.Main;
@@ -19,18 +17,22 @@ public class GameScreen implements Screen {
     private GameInputHandler gameInputHandler;
     private InputAdapter getGameInputAdapter;
     private GameStateHandler gameStateHandler;
+    private InputMultiplexer inputMultiplexer;
 
     public GameScreen(Main game) {
         this.game = game;
         this.gameStateHandler = game.getGameState();
         this.getGameInputAdapter = game.getGameInputAdapter();
         this.gameInputHandler = game.getGameInputHandler();
+        this.inputMultiplexer = new InputMultiplexer();
         touchPos = new Vector2();
     }
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(getGameInputAdapter);
+        inputMultiplexer.addProcessor(new GestureDetector(gameInputHandler.DoubleClickDetector()));
+        inputMultiplexer.addProcessor(getGameInputAdapter);
+        Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
     @Override
