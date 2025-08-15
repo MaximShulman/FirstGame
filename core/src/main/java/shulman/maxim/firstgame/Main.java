@@ -39,14 +39,14 @@ public class Main extends Game {
     private BitmapFont defaultTextFont;
     private InputProcessor inputProcessor;
 
-    private AssetManager assetManager;
+    private static AssetManager assetManager;
     private FitViewport gameViewport;
     private FitViewport mainMenuViewport;
-    public FitViewport getMainMenuViewport() {
+    public FitViewport getUIViewport() {
         return mainMenuViewport;
     }
 
-    public AssetManager getAssetManager() {
+    public static AssetManager getAssetManager() {
         return assetManager;
     }
 
@@ -100,6 +100,7 @@ public class Main extends Game {
         assetManager.load("empty_hexagon_selected.png", Texture.class);
         assetManager.load("planet_hexagon_unselected.png", Texture.class);
         assetManager.load("planet_hexagon_selected.png", Texture.class);
+        assetManager.load("arrow.png", Texture.class);
         assetManager.finishLoading();
         gameStateHandler = new GameStateHandler(gameViewport, assetManager);
         gameLogicHandler = new GameLogicHandler(gameStateHandler, this.gameViewport);
@@ -117,7 +118,7 @@ public class Main extends Game {
     @Override
     public void resize(int width, int height) {
         getGameViewport().update(width, height, false);
-        getMainMenuViewport().update(width,height,true);
+        getUIViewport().update(width,height,true);
         camera.update();
     }
 

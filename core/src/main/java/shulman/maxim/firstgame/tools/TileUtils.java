@@ -70,9 +70,9 @@ public class TileUtils {
         list.forEach(tile -> tile.drawTile(viewport, batch, isSelected));
     }
 
-    public static void drawAllRoutes(RouteMap routes, Viewport viewport, SpriteBatch batch) {
+    public static void drawAllRoutes(RouteMap routes, Viewport viewport, SpriteBatch batch, AssetManager assetManager) {
         routes.values().stream().flatMap(Collection::stream)
-        .forEach(route -> route.drawRoute(viewport, batch));
+        .forEach(route -> route.drawRoute(viewport, batch, assetManager));
     }
 
 

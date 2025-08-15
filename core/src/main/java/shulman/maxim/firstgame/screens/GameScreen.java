@@ -52,7 +52,7 @@ public class GameScreen implements Screen {
         game.getSpriteBatch().begin();
         TileUtils.drawAllTiles(gameStateHandler.getTiles(), game.getGameViewport(), game.getSpriteBatch(), false);
         TileUtils.drawAllTiles(gameStateHandler.getSelectedTiles(), game.getGameViewport(), game.getSpriteBatch(), true);
-        TileUtils.drawAllRoutes(gameStateHandler.getRoutes(), game.getGameViewport(), game.getSpriteBatch());
+        TileUtils.drawAllRoutes(gameStateHandler.getRoutes(), game.getGameViewport(), game.getSpriteBatch(), game.getAssetManager());
         game.getSpriteBatch().end();
     }
 

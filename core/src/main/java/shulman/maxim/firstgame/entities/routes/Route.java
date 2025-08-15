@@ -1,19 +1,26 @@
 package shulman.maxim.firstgame.entities.routes;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.CatmullRomSpline;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import shulman.maxim.firstgame.Main;
+import shulman.maxim.firstgame.entities.ships.Ship;
 import shulman.maxim.firstgame.entities.world.PlanetTile;
 import shulman.maxim.firstgame.entities.world.Tile;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import static shulman.maxim.firstgame.entities.world.Tile.TILE_HEIGHT;
 import static shulman.maxim.firstgame.entities.world.Tile.TILE_WIDTH;
@@ -24,6 +31,9 @@ public class Route {
     private TextureRegion region;
     private PlanetTile destination;
     private ArrayList<Vector2> controlPoints;
+    private CatmullRomSpline<Vector2> spline;
+    private Set<Ship> shipSet;
+
 
     public PlanetTile getOrigin() {
         return origin;
@@ -50,6 +60,12 @@ public class Route {
             pixmap.dispose();
             texture.dispose();
         }
+        this.shipSet = new HashSet<>();
+    }
+
+    public void createShip(){
+        Ship ship = new Ship(this, Main.getAssetManager());
+        this.shipSet.add(ship);
     }
 
     public Route addTile(Tile tile) {
@@ -67,7 +83,7 @@ public class Route {
         return this;
     }
 
-    public void drawRoute(Viewport viewport, SpriteBatch batch) {
+    public void drawRoute(Viewport viewport, SpriteBatch batch, AssetManager assetManager) {
         ShapeDrawer drawer = new ShapeDrawer(batch, region);
 
         for (int i = 0; i < list.size() - 1; i++) {
@@ -88,7 +104,7 @@ public class Route {
         }
 
         if (controlPoints.size() >= 4) {
-            CatmullRomSpline<Vector2> spline = new CatmullRomSpline<>(controlPoints.toArray(Vector2[]::new), false);
+            spline = new CatmullRomSpline<>(controlPoints.toArray(Vector2[]::new), false);
 
             int samples = controlPoints.size();
             Vector2[] points = new Vector2[samples];
@@ -99,6 +115,11 @@ public class Route {
             for (int i = 0; i < samples - 1; i++) {
                 drawer.line(points[i].x, points[i].y, points[i + 1].x, points[i + 1].y, 0.1f);
             }
+
+        }
+
+        for (Ship ship : shipSet){
+            ship.drawShip(spline, batch, viewport);
         }
 
     }

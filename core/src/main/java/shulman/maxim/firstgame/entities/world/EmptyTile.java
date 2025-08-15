@@ -46,13 +46,13 @@ public class EmptyTile extends Tile {
 
 
     public EmptyTile(int x, int y, int z, Viewport viewport, Texture textureSelected, Texture textureUnselected) {
-        emptyTileTextureUnselected = textureUnselected;
-        emptyTileTextureSelected = textureSelected;
+        this.emptyTileTextureUnselected = textureUnselected;
+        this.emptyTileTextureSelected = textureSelected;
         this.x = x;
         this.y = y;
         this.z = z;
         this.viewport = viewport;
-        boundsHexagon = new Polygon(this.getVertices(viewport));
+        this.boundsHexagon = new Polygon(this.getVertices(viewport));
     }
 
     public EmptyTile(int x, int y, int z, Viewport viewport, AssetManager assetManager) {
