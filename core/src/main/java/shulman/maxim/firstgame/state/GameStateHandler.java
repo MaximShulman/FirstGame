@@ -44,7 +44,7 @@ public class GameStateHandler {
     }
 
     public GameStateHandler(Viewport viewport, AssetManager assetManager){
-        tiles = TileUtils.populateWorld(15, viewport, assetManager);
+        tiles = TileUtils.populateWorld(4, viewport, assetManager);
         routes = new RouteMap();
     }
 

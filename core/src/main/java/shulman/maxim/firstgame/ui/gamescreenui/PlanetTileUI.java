@@ -9,6 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import shulman.maxim.firstgame.Main;
+import shulman.maxim.firstgame.entities.routes.Route;
+import shulman.maxim.firstgame.entities.world.Planet;
+import shulman.maxim.firstgame.entities.world.PlanetTile;
 
 public class PlanetTileUI {
 
@@ -17,7 +20,7 @@ public class PlanetTileUI {
     private FitViewport viewport;
     private Main game;
 
-    public PlanetTileUI(Main game) {
+    public PlanetTileUI(Main game, Route route) {
         this.game = game;
         this.skin = game.getAssetManager().get("ui/metal-ui.json");
         this.viewport = game.getUIViewport();
@@ -30,7 +33,7 @@ public class PlanetTileUI {
         makeShip.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent changeEvent, Actor actor) {
-                game.setGameScreen();
+                route.createShip();
             }
         });
         Gdx.input.setInputProcessor(stage);

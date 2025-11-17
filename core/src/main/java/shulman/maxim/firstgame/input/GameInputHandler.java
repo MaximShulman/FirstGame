@@ -65,6 +65,12 @@ public class GameInputHandler {
         return new GestureDetector.GestureListener() {
             @Override
             public boolean touchDown(float v, float v1, int i, int i1) {
+                if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
+                    Vector2 touchPos = viewport.unproject(new Vector2(v, v1));
+                    if (gameLogicHandler.tileFromCoordinatesDefault(touchPos) instanceof PlanetTile){
+
+                    }
+                }
                 return false;
             }
 
