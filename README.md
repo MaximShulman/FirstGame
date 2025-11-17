@@ -1,8 +1,25 @@
-# FirstGame
+# FirstGame - Hex Strategy Prototype
 
-A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
+A 2D hex-based strategy game prototype built with Java, LibGDX, Gradle, and JUnit.
+This project was originally generated with gdx-liftoff and extended as a learning project to gain experience in game development, input handling, and rendering logic.
 
-This project was generated with a template including simple application launchers and an `ApplicationAdapter` extension that draws libGDX logo.
+## Project Overview
+
+This prototype explores the core systems behind a real-time strategy game:
+
+- Hexagonal game map
+
+- Planet-based nodes connected with lines
+
+- Camera movement with custom mouse controls (panning & zooming)
+
+- Basic UI screens (main menu, game screen)
+
+- Early logic for entities and world interaction
+
+- Unit test setup using JUnit
+
+The project is not complete and some systems are experimental, but it demonstrates architectural structure, input handling, and rendering techniques in LibGDX.
 
 ## Platforms
 
@@ -27,7 +44,4 @@ Useful Gradle tasks and flags:
 - `idea`: generates IntelliJ project data.
 - `lwjgl3:jar`: builds application's runnable jar, which can be found at `lwjgl3/build/libs`.
 - `lwjgl3:run`: starts the application.
-- `test`: runs unit tests (if any).
-
-Note that most tasks that are not specific to a single project can be run with `name:` prefix, where the `name` should be replaced with the ID of a specific project.
-For example, `core:clean` removes `build` folder only from the `core` project.
+- `test`: runs unit tests.
