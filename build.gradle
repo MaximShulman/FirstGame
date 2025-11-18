@@ -59,6 +59,7 @@ configure(subprojects) {
 
 subprojects {
   version = "$projectVersion"
+  ext.shapedrawerVersion = '2.5.0'
   ext.appName = 'FirstGame'
   repositories {
     mavenCentral()

@@ -4,6 +4,7 @@ plugins {
   id 'info.solidsoft.pitest' version '1.15.0'
 }
 
+
 checkstyle {
   toolVersion = '10.12.3'
   configDirectory = file("$rootDir/config/checkstyle")
@@ -20,8 +21,14 @@ dependencies {
   api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
   api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
   api "com.badlogicgames.gdx:gdx:$gdxVersion"
+  testImplementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+  testImplementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
+  testRuntimeOnly "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+  testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
   testImplementation platform('org.junit:junit-bom:5.9.1')
   testImplementation 'org.junit.jupiter:junit-jupiter'
+  testImplementation 'org.assertj:assertj-core:3.26.3'
+  implementation "space.earlygrey:shapedrawer:$shapedrawerVersion"
 
   if(enableGraalNative == 'true') {
     implementation "io.github.berstanio:gdx-svmhelper-annotations:$graalHelperVersion"
@@ -50,3 +57,4 @@ pitest {
 test {
   useJUnitPlatform()
 }
+
